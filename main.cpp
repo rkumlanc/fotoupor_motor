@@ -6,8 +6,8 @@
 // Vključitev potrebnih knjižnic za delovanje
 
 // Podatki za povezavo z WiFi
-const char* ssid = "Telefonist";      // Ime WiFi omrežja
-const char* password = "Kucroo123#";  // Geslo WiFi omrežja
+const char* ssid = "********";      // Ime WiFi omrežja
+const char* password = "*********";  // Geslo WiFi omrežja
 
 // Nastavitve za WebSocket
 WebSocketsClient webSocket;           // Objekt za sprejemanje podatkov
