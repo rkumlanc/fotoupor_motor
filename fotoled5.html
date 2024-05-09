@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>  
+    <title>Control Interface</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #5D5C61;
+        }
+        .button-container {
+            margin: 20px;
+        }
+        .gumb {
+            background-color: #7395AE;
+            padding: 15px 30px;
+            width: auto;
+            color: white;
+            font-size: 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .gumb:hover, .gumb.on {
+            background-color: #557A95;
+        }
+
+        p {
+            font-size: 1.6em;
+        }
+        .prisotna {
+            color: green;
+        }
+        .odsotna {
+            color: red;
+        }
+        canvas {
+            border: 1px solid #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ESP32 nadzor LED Seminarska naloga IoT</h1>
+    <div class="button-container">
+        <button id="PIN5" class='gumb' onclick='toggleLed("PIN5")'>LED PIN5</button>
+    </div>
+    <p>Svetloba: <span id="svetloba" class="neznano">Preveri LED</span></p>
+    <canvas id="platno1" width="400" height="100"></canvas>
+    
+    <script type="text/javascript">
+        "use strict";
+
+        class Graf {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.values = [];
+            }
+
+            addValue(value) {
+                if (this.values.length >= this.canvas.width) {
+                    this.values.shift();
+                }
+                this.values.push(value);
+                this.draw();
+            }
+
+            draw() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = '#ff0000';
+                let maxVal = 4095;
+                let scale = this.canvas.height / maxVal;
+                
+                this.values.forEach((val, index) => {
+                    let y = this.canvas.height - (val * scale);
+                    if (index === 0) {
+                        this.ctx.moveTo(index, y);
+                    } else {
+                        this.ctx.lineTo(index, y);
+                    }
+                });
+                
+                this.ctx.stroke();
+            }
+        }
+
+        let graf = new Graf("platno1");
+        let ws = new WebSocket("ws://192.168.151.144:8888");
+
+        ws.onopen = function() {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onerror = function(error) {
+            console.error('WebSocket Error: ', error);
+        };
+
+        ws.onmessage = function(event) {
+            let msg = JSON.parse(event.data);
+            if (msg.tipSporočila === "potenciometer") {
+                graf.addValue(msg.vrednost);
+            } else if (msg.tipSporočila === "Svetloba") {
+                let sv = document.getElementById('svetloba');
+                sv.textContent = msg.vrednost ? "prisotna" : "odsotna";
+                sv.className = msg.vrednost ? 'prisotna' : 'odsotna';
+            }
+        };
+
+        function toggleLed(ledId) {
+            let button = document.getElementById(ledId);
+            let state = button.classList.contains('on');
+            ws.send(JSON.stringify({ tipSporočila: "LED", pin: ledId, vrednost: state ? 0 : 1 }));
+            button.classList.toggle('on');
+        }
+    </script>
+</body>
+</html>

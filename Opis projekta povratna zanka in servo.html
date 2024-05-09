@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html lang="sl">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+    <title>ESP32 LED Nadzor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        p, li {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .code {
+            background-color: #f0f0f0;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow: auto;
+            border-left: 3px solid #3498db;
+            margin: 10px 0;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
+        .gumb {
+            background-color: #3498db;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .gumb:hover, .gumb.on {
+            background-color: #2980b9;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <<div class="container">
+		<h1>Seminarska Naloga IOTDISIA</h1>
+        <h1>ESP32 nadzor LED, servomotor in potenciometer</h1>
+		<h1>Izdelal: Rolando Kumlanc</h1>
+        <img src="https://www.electronicwings.com/storage/PlatformSection/TopicContent/421/icon/ESP32%20Interduction%20Banner%20Image.jpg" alt="ESP32 Module">
+
+    <h2>I. Uvod</h2>
+    <p>Projekt IoT Nadzor z ESP32 združuje sodobne tehnologije za ustvarjanje interaktivnega sistema, ki omogoča nadzor in spremljanje naprav na daljavo. V osrčju projekta je mikrokontroler ESP32, ki je zaradi svoje zmogljivosti, nizke cene in vsestranskosti postal priljubljena izbira za izdelavo IoT rešitev.</p>
+
+    <h2>II. Zasnova sistema</h2>
+    <h3>A. Hardware Komponente</h3>
+    <p>Centralni del sistema je <strong>ESP32 mikrokontroler</strong>, opremljen z Wi-Fi in Bluetooth funkcionalnostmi, kar omogoča enostavno povezljivost. Dodatne komponente vključujejo:</p>
+    <ul>
+        <li><strong>Potenciometer:</strong> Uporablja se za analogni vhod, ki simulira nastavljive uporabniške preference.</li>
+        <li><strong>Fotoupornik:</strong> Uporablja se za zaznavanje svetlobnih razmer v okolju.</li>
+        <li><strong>LED dioda:</strong> Uporablja se za vizualni prikaz stanja sistema.</li>
+		<li><strong>Servo motor:</strong> Uporablja se za vizualni prikaz stanja.</li>
+    </ul>
+
+    <h3>B. Programska oprema</h3>
+    <p>Programska oprema je razdeljena na dva glavna dela: firmware za ESP32, napisan v C++, in spletni vmesnik, ki uporablja HTML, CSS in JavaScript. Node.js strežnik služi kot vmesnik med mikrokontrolerjem in spletnim vmesnikom.</p>
+
+    <h4>1. ESP32 Firmware</h4>
+    <p>Firmware, ki teče na ESP32, je odgovoren za branje senzorskih podatkov, obdelavo uporabniških ukazov preko WebSocket povezave in izvajanje ukazov, kot je vklop/izklop LED diod.</p>
+
+    <h4>2. Spletni Vmesnik in Strežnik</h4>
+    <p>Spletni vmesnik omogoča uporabnikom interaktivno nadzorno ploščo za nadzor naprave. WebSocket strežnik na Node.js platformi posreduje sporočila med ESP32 in spletnim brskalnikom, kar omogoča realnočasovno komunikacijo.</p>
+
+    <h2>III. Implementacija</h2>
+    <h3>A. Postopek vzpostavitve povezave</h3>
+    <p>Ob zagonu sistema ESP32 vzpostavi Wi-Fi povezavo in se poveže z WebSocket strežnikom. Po uspešni povezavi se začne prenos podatkov s senzorjev na strežnik, strežnik pa ta ista sporočila posreduje spletnemu vmesniku.</p>
+
+    <h3>B. Delovanje Spletnega Vmesnika</h3>
+    <p>Uporabnik preko spletnega vmesnika pošilja ukaze za nadzor LED diod, ki se preko strežnika posredujejo ESP32. Prav tako lahko uporabnik spremlja vrednosti, ki jih zaznava potenciometer in fotoupornik, preko dinamično posodobljenih grafov in indikatorjev na spletni strani.</p>
+
+    <h2>IV. Zaključki in Priporočila</h2>
+    <p>Sistem uspešno združuje več tehnologij za zagotavljanje zanesljivega in učinkovitega nadzora naprav na daljavo. Priporočljivo je nadaljnje raziskovanje v smislu optimizacije kode in izboljšanja varnosti sistema, zlasti pri komunikaciji preko WebSocket povezav.</p>
+
+    <h2>V. Literatura in Viri</h2>
+    <ul>
+		<li>https://www.youtube.com/@andrejskraba</li>
+		<li>https://wiki.keyestudio.com/Ks0402(403,_404)_keyestudio_Basic_Starter_V2.0_Kit_for_Arduino#Project_21:_Servo_Control</li>
+		<li>https://wokwi.com/esp32</li>
+        <li>ESP32 Official Documentation - <a href="https://www.espressif.com/en/products/socs/esp32">https://www.espressif.com/en/products/socs/esp32</a></li>
+        <li>Node.js Documentation - <a href="https://nodejs.org/en/docs/">https://nodejs.org/en/docs/</a></li>
+        <li>WebSockets - <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API</a></li>
+    </ul>
+</body>
+</html>
